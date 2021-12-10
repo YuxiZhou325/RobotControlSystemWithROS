@@ -2,7 +2,7 @@
 """
 This file uses Fuzzy Logic implementing
 right Edge following and obstacle avoidance task
-for the Rosbot in RVIZ and Gazebo environment
+for the Rosbot in Rviz and Gazebo environment
 """
 
 import rospy
@@ -180,7 +180,7 @@ class FuzzySet(object):
         rule_base = RuleBase([rule_1, rule_2])
         return rule_base
 
-    # Calculates membership value of obstacle avoidance and right edge following w.r.t to fron sensor.
+    # Calculates membership value of obstacle avoidance and right edge following w.r.t to front sensor.
     # Return Value: list of dictionary.
     def class_fuzzyfication(self):
         front_sensor_distance = {"OA": self.class_Membership[0].calculate_membership_value(self.front_sensor_distance),
@@ -300,12 +300,12 @@ class FuzzySetOA(FuzzySet):
         super(FuzzySetOA, self).__init__()
         # Membership function for obstacle avoidance for both the sensors
 
-        self.sensor_1_Membership = [MembershipFunctions([0.1, 0.1, 1.0, 1.5], "Near"),
-                                    MembershipFunctions([1.0, 1.5, 1.5, 2.0], "Medium"),
-                                    MembershipFunctions([1.5, 2.0, 2.5, 3.0], "Far")]
-        self.sensor_2_Membership = [MembershipFunctions([0.1, 0.1, 1.0, 1.5], "Near"),
-                                    MembershipFunctions([1.0, 1.5, 1.5, 2.0], "Medium"),
-                                    MembershipFunctions([1.5, 2.0, 2.5, 3.0], "Far")]
+        self.sensor_1_Membership = [MembershipFunctions([0.1, 0.1, 0.7, 1.5], "Near"),
+                                    MembershipFunctions([0.7, 1.5, 1.5, 2.0], "Medium"),
+                                    MembershipFunctions([1.5, 2.0, 3.0, 3.0], "Far")]
+        self.sensor_2_Membership = [MembershipFunctions([0.1, 0.1, 0.7, 1.5], "Near"),
+                                    MembershipFunctions([0.7, 1.5, 1.5, 2.0], "Medium"),
+                                    MembershipFunctions([1.5, 2.0, 3.0, 3.0], "Far")]
 
         self.rule_base = self.create_rules()
 
@@ -316,8 +316,8 @@ class FuzzySetOA(FuzzySet):
 
         rule_base = []
         rule_1 = Rule(["Near", "Near"], ["Slow", "Left"])
-        rule_2 = Rule(["Near", "Medium"], ["Slow", "Left"])
-        rule_3 = Rule(["Near", "Far"], ["Slow", "Left"])
+        rule_2 = Rule(["Near", "Medium"], ["Slow", "Right"])
+        rule_3 = Rule(["Near", "Far"], ["Slow", "Right"])
         rule_4 = Rule(["Medium", "Near"], ["Slow", "Left"])
         rule_5 = Rule(["Medium", "Medium"], ["Slow", "Forward"])
         rule_6 = Rule(["Medium", "Far"], ["Medium", "Forward"])
@@ -376,7 +376,7 @@ def callback(msg, fuzzy):
 
     fuzzy[0].front_sensor_distance = regions_['front']
     fuzzy[1].set_sensor_values(regions_['right'], regions_['front_right'])
-    fuzzy[2].set_sensor_values(regions_['top_left'], regions_['top_right'])
+    fuzzy[2].set_sensor_values(regions_['front_left'], regions_['front_right'])
 
 
 # This is the function which runs continuously and does the operations based on sensor values.

@@ -164,12 +164,12 @@ class FuzzySetOA(object):
 
         # Memebership function for obstacle avoidance for both the sensors
 
-        self.sensor_1_Membership = [MembershipFunctions([0.1, 0.1, 1.0, 1.5], "Near"),
-                                    MembershipFunctions([1.0, 1.5, 1.5, 2.0], "Medium"),
-                                    MembershipFunctions([1.5, 2.0, 2.5, 3.0], "Far")]
-        self.sensor_2_Membership = [MembershipFunctions([0.1, 0.1, 1.0, 1.5], "Near"),
-                                    MembershipFunctions([1.0, 1.5, 1.5, 2.0], "Medium"),
-                                    MembershipFunctions([1.5, 2.0, 2.5, 3.0], "Far")]
+        self.sensor_1_Membership = [MembershipFunctions([0.1, 0.1, 0.7, 1.5], "Near"),
+                                    MembershipFunctions([0.7, 1.5, 1.5, 2.0], "Medium"),
+                                    MembershipFunctions([1.5, 2.0, 3.0, 3.0], "Far")]
+        self.sensor_2_Membership = [MembershipFunctions([0.1, 0.1, 0.7, 1.5], "Near"),
+                                    MembershipFunctions([0.7, 1.5, 1.5, 2.0], "Medium"),
+                                    MembershipFunctions([1.5, 2.0, 3.0, 3.0], "Far")]
 
         self.rule_base = self.create_rules()
 
@@ -180,8 +180,8 @@ class FuzzySetOA(object):
     def create_rules(self):
         rule_base = []
         rule_1 = Rule(["Near", "Near"], ["Slow", "Left"])
-        rule_2 = Rule(["Near", "Medium"], ["Slow", "Left"])
-        rule_3 = Rule(["Near", "Far"], ["Slow", "Left"])
+        rule_2 = Rule(["Near", "Medium"], ["Slow", "Right"])
+        rule_3 = Rule(["Near", "Far"], ["Slow", "Right"])
         rule_4 = Rule(["Medium", "Near"], ["Slow", "Left"])
         rule_5 = Rule(["Medium", "Medium"], ["Slow", "Forward"])
         rule_6 = Rule(["Medium", "Far"], ["Medium", "Forward"])
@@ -322,7 +322,7 @@ def callback(msg, fuzzy):
     if str(regions_['top_right']) == 'inf' or regions_['top_right'] >= 3:
         regions_['top_right'] = 2.99
 
-    fuzzy_oa.set_sensor_values(regions_['top_left'], regions_['top_right'])
+    fuzzy_oa.set_sensor_values(regions_['front_left'], regions_['front_right'])
 
 
 # This is the function which runs continuously and does the operations based on sensor values.
