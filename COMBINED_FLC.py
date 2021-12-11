@@ -150,13 +150,13 @@ class FuzzySet(object):
         self.rule_base = []
         self.sensor_1_Membership = []
         self.sensor_2_Membership = []
-        self.classspeedCentreSet = []
-        self.classsteerCentreSet = []
+        self.classspeed_centre_set = []
+        self.classsteer_centre_set = []
 
         # output centre of set for speed
-        self.speedCentreSet = {"Slow": 0.1, "Medium": 0.8, "Fast": 1.0}
+        self.speed_centre_set = {"Slow": 0.1, "Medium": 0.8, "Fast": 1.0}
         # output centre of set for steer
-        self.steerCentreSet = {"Left": 1.0, "Forward": 0, "Right": -0.8}
+        self.steer_centre_set = {"Left": 1.0, "Forward": 0, "Right": -0.8}
 
         # Membership function for both obstacle avoidance and Right Edge Following.
         self.class_Membership = [MembershipFunctions([0.1, 0.1, 1.0, 1.5], "OA"),
@@ -221,8 +221,8 @@ class FuzzySet(object):
                 print("steer set", rule.consequents[1])
                 print("fs set", rule_firing_points)
                 # storing and appending both the consequents of rules in two different lists
-                rule_speed.append(self.classspeedCentreSet[rule.consequents[0]])
-                rule_steer.append(self.classsteerCentreSet[rule.consequents[1]])
+                rule_speed.append(self.classspeed_centre_set[rule.consequents[0]])
+                rule_steer.append(self.classsteer_centre_set[rule.consequents[1]])
         print("Firing Strength: ", rule_firing_points)
         print("Rule Speed:", rule_speed)
         print("Rule Steer: ", rule_steer)
@@ -250,8 +250,8 @@ class FuzzySet(object):
                 print("steer set", rule.consequents[1])
                 print("fs set", rule_firing_points)
                 # storing and appending both the consequents of rules in two different lists
-                rule_speed.append(self.speedCentreSet[rule.consequents[0]])
-                rule_steer.append(self.steerCentreSet[rule.consequents[1]])
+                rule_speed.append(self.speed_centre_set[rule.consequents[0]])
+                rule_steer.append(self.steer_centre_set[rule.consequents[1]])
         print("Firing Strength: ", rule_firing_points)
         print("Rule Speed:", rule_speed)
         print("Rule Steer: ", rule_steer)
@@ -402,8 +402,8 @@ def controller(fuzzy):
         # Getting Crisp output for both speed and steer
         speed_oa, steer_oa = fuzzy[2].defuzzification(membership_values_dictionary)
         # Creating dynamic dictionary with REF speed, steer and OA speed,steer
-        fuzzy[0].classspeedCentreSet = {"Speed_OA": speed_oa, "Speed_REF": speed_ref}
-        fuzzy[0].classsteerCentreSet = {"Steer_OA": steer_oa, "Steer_REF": steer_ref}
+        fuzzy[0].classspeed_centre_set = {"Speed_OA": speed_oa, "Speed_REF": speed_ref}
+        fuzzy[0].classsteer_centre_set = {"Steer_OA": steer_oa, "Steer_REF": steer_ref}
         # Getting membership value for OA and REF
         membership_values_dictionary = fuzzy[0].class_fuzzyfication()
         # Getting Crisp output for both speed and steer
